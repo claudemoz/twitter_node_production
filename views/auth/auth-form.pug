@@ -1,0 +1,18 @@
+extends ../layout.pug 
+
+block content
+  div(class="d-flex justify-content-center content  mx-auto")
+    form(class="card w-50 mt-5" action="/auth/signin" method="post")
+      div(class="card-header") Connexion 
+      div(class="card-body")
+        div(class="form-group")
+            label Email
+            input(type="email" name="email" class="form-control")
+        div(class="form-group")
+            label Password
+            input(type="password" name="password" class="form-control")
+        if errors 
+          ul(class="my-2")
+              li(class="text-danger")= errors
+        div(class="w-100")
+          input(type="submit" value="connexion" class="btn btn-primary ml-auto d-block")
