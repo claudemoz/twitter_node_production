@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt')
 
-const userSchema = mongoose.Schema({
+const userSchema = Schema({
     username: { type: String, required: true },
     local: {
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true }
     },
-    avatar: {type: String, default:"/images/default-profile.png"}
+    avatar: {type: String, default:"/images/default-profile.png"},
+    following:{ type: [Schema.Types.ObjectId], ref:'user'}
 });
 
 userSchema.statics.hashPassword = async (password) => {
