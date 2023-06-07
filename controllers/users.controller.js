@@ -42,22 +42,22 @@ exports.userProfile = async (req, res, next) => {
   }
 }
 
-exports.signupForm = (req, res, next) => {
-  res.render('users/user-form.pug', { errors: null, isAuthenticated: req.isAuthenticated(), currentUser: req.user });
-}
+// exports.signupForm = (req, res, next) => {
+//   res.render('users/user-form.pug', { errors: null, isAuthenticated: req.isAuthenticated(), currentUser: req.user });
+// }
 
-exports.signup = async (req, res, next) => {
-  try {
-    const { username, email, password } = req.body;
-    const hashPassword = await UserModel.hashPassword(password)
-    const user = await UserModel.create({ username: username, local: { email: email, password: hashPassword } })
-    if (user) {
-      res.redirect('/');
-    }
-  } catch (e) {
-    res.render('users/user-form', { errors: e , isAuthenticated: req.isAuthenticated(), currentUser: req.user});
-  }
-}
+// exports.signup = async (req, res, next) => {
+//   try {
+//     const { username, email, password } = req.body;
+//     const hashPassword = await UserModel.hashPassword(password)
+//     const user = await UserModel.create({ username: username, local: { email: email, password: hashPassword } })
+//     if (user) {
+//       res.redirect('/');
+//     }
+//   } catch (e) {
+//     res.render('users/user-form', { errors: e , isAuthenticated: req.isAuthenticated(), currentUser: req.user});
+//   }
+// }
 
 exports.uploadeImage = [
   upload.single('avatar'),
@@ -78,7 +78,7 @@ exports.followUser = async (req, res, next)=>{
  try {
   const userId = req.params.userId;
   const [, user] = await Promise.all([addUserIdToCurrentUserFollowing(req.user, userId), findUserPerId(userId)])
-  res.redirect(`/users/${user.username}`)
+  if(user) res.redirect(`/users/${user.username}`)
  } catch (e) {
   next(e)
  }
@@ -88,7 +88,7 @@ exports.unFollowUser = async (req, res, next)=>{
   try {
     const userId = req.params.userId;
     const [, user] = await Promise.all([removeUserIdToCurrentUserFollowing(req.user, userId), findUserPerId(userId)])
-    res.redirect(`/users/${user.username}`)
+    if(user) res.redirect(`/users/${user.username}`)
    } catch (e) {
     next(e)
    }
